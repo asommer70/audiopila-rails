@@ -1,0 +1,51 @@
+<h3>Settings</h3>
+<hr/>
+
+<div class="row">
+  <div class="columns large-6">
+    <ul class="no-bullet">
+
+      <li>
+        <div class="row">
+          <div class="columns large-4">
+            <strong>repositories:</strong>
+          </div>
+
+          <div class="columns large-8">
+            <ul class="repositories">
+              <% @repositories.each_with_index do |repo, idx| %>
+                <li>
+                  <%= repo %>
+
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+
+                  <%= link_to 'Delete', '/settings/repositories?index=' + idx.to_s, method: 'delete' %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+
+
+<hr/>
+
+<%= form_for 'settings' do %>
+  <div class="row">
+    <div class="columns large-4">
+      <%= label_tag 'settings_repositories_', 'Add Repository' %>
+      <%= text_field_tag 'settings[repositories][]', '', placeholder: 'Music Repository path' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns small-4">
+      <%= submit_tag 'Save Settings', class: 'button small' %>
+    </div>
+  </div>
+<% end %>
