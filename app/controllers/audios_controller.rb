@@ -5,6 +5,7 @@ class AudiosController < ApplicationController
   # GET /audios.json
   def index
     @audios = Audio.all
+    @repositories = Settings.repositories
   end
 
   # GET /audios/1
@@ -34,6 +35,32 @@ class AudiosController < ApplicationController
         format.html { render :new }
         format.json { render json: @audio.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  # GET /sync_repo/:id
+  def sync_repo
+    repo = Settings.repositories[params[:id].to_i]
+
+    files = `find #{repo} -name "*.mp3" -o -name "*.m4a" -o -name "*.ogg"`
+    files = files.split("\n")
+
+    files.each do |file|
+      file_name = file.split('/')[-1]
+
+      unless Audio.find_by_name(file_name)
+        Audio.create(name: file_name, path: file)
+      end
+    end
+
+    flash[:info] = 'Repository sync successful.'
+    redirect_to audios_path
+  end
+
+  def stream
+    audio = Audio.find(params[:id])
+    if audio
+      send_file audio.path
     end
   end
 
@@ -69,6 +96,6 @@ class AudiosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def audio_params
-      params[:audio]
+      params[:audio].permit(:name, :path)
     end
 end

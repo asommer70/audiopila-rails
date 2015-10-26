@@ -1,6 +1,6 @@
-<h1>Editing Audio</h1>
+<h3>Editing <%= @audio.name %></h3>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @audio %> |
-<%= link_to 'Back', audios_path %>
+<%= link_to 'Show', @audio, class: 'button small' %> |
+<%= link_to 'Back', audios_path, class: 'button small' %>

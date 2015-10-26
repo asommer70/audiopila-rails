@@ -1,25 +1,27 @@
-<p id="notice"><%= notice %></p>
+<h2>Audio Files</h2>
 
-<h1>Listing Audios</h1>
+<% @repositories.each_with_index do |repo, idx| %>
+  <h3>Repository:</h3>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <%= repo %>
 
-  <tbody>
+  <br/><hr><br/>
+
+  <% if @audios.blank? %>
+    No audio files created from this repository...
+    <br/><br/>
+  <% end %>
+  <%= link_to 'Sync Repository', sync_repo_path(idx), class: 'button small' %>
+
+  <br/><hr><br/>
+
+
+  <ul>
     <% @audios.each do |audio| %>
-      <tr>
-        <td><%= link_to 'Show', audio %></td>
-        <td><%= link_to 'Edit', edit_audio_path(audio) %></td>
-        <td><%= link_to 'Destroy', audio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <li>
+        <%= link_to audio.name, audio_path(audio) %>
+      </li>
     <% end %>
-  </tbody>
-</table>
+  </ul>
 
-<br>
-
-<%= link_to 'New Audio', new_audio_path %>
+<% end %>

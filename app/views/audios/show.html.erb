@@ -1,4 +1,14 @@
-<p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_audio_path(@audio) %> |
-<%= link_to 'Back', audios_path %>
+<h2><%= @audio.name %></h2>
+
+<br/><hr/><br/>
+
+<audio id="<%= @audio.id %>" controls>
+  <source src="<%= stream_path(@audio.id) %>"></source>
+</audio>
+
+<br/><hr/><br/>
+
+
+<%= link_to 'Edit', edit_audio_path(@audio), class: 'button small' %> |
+<%= link_to 'Back', audios_path, class: 'button small' %>
