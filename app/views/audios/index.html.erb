@@ -3,7 +3,7 @@
 <% @repositories.each_with_index do |repo, idx| %>
   <h3>Repository:</h3>
 
-  <%= repo %>
+  <span class="repo-path"><%= repo %></span>
 
   <br/><hr><br/>
 
@@ -16,7 +16,7 @@
   <br/><hr><br/>
 
 
-  <ul>
+  <ul class="audio-list">
     <% @audios.each do |audio| %>
       <li>
         <%= link_to audio.name, audio_path(audio) %>

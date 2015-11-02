@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AudiosControllerTest < ActionController::TestCase
   setup do
-    @audio = audios(:one)
+    @audio = audios(:test)
   end
 
   test "should get index" do
@@ -18,7 +18,7 @@ class AudiosControllerTest < ActionController::TestCase
 
   test "should create audio" do
     assert_difference('Audio.count') do
-      post :create, audio: {  }
+      post :create, audio: { name: 'test3.mp3', path: '~/Music' }
     end
 
     assert_redirected_to audio_path(assigns(:audio))
@@ -27,6 +27,7 @@ class AudiosControllerTest < ActionController::TestCase
   test "should show audio" do
     get :show, id: @audio
     assert_response :success
+    assert_select 'audio'
   end
 
   test "should get edit" do

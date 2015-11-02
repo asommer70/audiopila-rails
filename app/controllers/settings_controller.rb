@@ -21,7 +21,6 @@ class SettingsController < ApplicationController
   end
 
   def destroy
-    puts "params: #{params}"
     if params[:id] == 'repositories'
       Settings.repositories.delete_at(params[:index].to_i)
       Settings.repositories = Settings.repositories
