@@ -3,8 +3,12 @@
 
 <br/><hr/><br/>
 
-<audio id="<%= @audio.id %>" controls>
-  <source src="<%= stream_path(@audio.id) %>"></source>
+<audio id="<%= @audio.id %>" controls data-audio="<%= @audio.id %>" class="player">
+  <% if @audio.path.index('http') %>
+    <source src="<%= @audio.path %>"></source>
+  <% else %>
+    <source src="<%= stream_path(@audio.id) %>"></source>
+  <% end %>
 </audio>
 
 <br/><hr/><br/>

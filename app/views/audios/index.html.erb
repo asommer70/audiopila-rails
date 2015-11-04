@@ -27,3 +27,15 @@
   </ul>
 
 <% end %>
+
+<br/><hr/><br/>
+
+<h3>Network Audios</h3>
+
+<% @manuals.each do |audio| %>
+  <ul class="audio-list">
+    <li>
+      <%= link_to audio.name, audio_path(audio) %>
+    </li>
+  </ul>
+<% end %>
