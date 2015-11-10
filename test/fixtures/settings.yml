@@ -1,3 +1,0 @@
-repo:
-  var: 'repositories'
-  value: "['~/Music']"
