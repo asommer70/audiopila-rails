@@ -1,41 +1,47 @@
 <h2>Audio Files</h2>
 
-<% @repositories.each_with_index do |repo, idx| %>
-  <h3>Repository:</h3>
+<% unless @repositories.blank? %>
+  <% @repositories.each_with_index do |repo, idx| %>
+    <h3>Repository:</h3>
 
-  <span class="repo-path"><%= repo %></span>
+    <span class="repo-path"><%= repo %></span>
 
-  <br/><hr><br/>
+    <br/><hr><br/>
 
-  <% if @audios.blank? %>
-    No audio files created from this repository...
-    <br/><br/>
-  <% end %>
-  <%= link_to 'Sync Repository', sync_repo_path(idx), class: 'button small' %>
-
-  <br/><hr><br/>
-
-
-  <ul class="audio-list">
-    <% @audios.each do |audio| %>
-      <% if audio.path.index(repo) %>
-        <li>
-          <%= link_to audio.name, audio_path(audio) %>
-        </li>
-      <% end %>
+    <% if @audios.blank? %>
+      No audio files created from this repository...
+      <br/><br/>
     <% end %>
-  </ul>
+    <%= link_to 'Sync Repository', sync_repo_path(idx), class: 'button small', id: 'repo_sync_' + idx.to_s %>
 
+    <br/><hr><br/>
+
+
+    <ul id="<%= idx %>" class="audio-list">
+      <% @audios.each do |audio| %>
+        <% if audio.path.index(repo) %>
+          <li>
+            <%= link_to audio.name, audio_path(audio) %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+
+  <% end %>
+<% else %>
+  <p>
+    No repositories configured... please see <%= link_to 'Settings', settings_path %>.
+  </p>
 <% end %>
 
 <br/><hr/><br/>
 
 <h3>Network Audios</h3>
 
-<% @manuals.each do |audio| %>
-  <ul class="audio-list">
+<ul  id="manuals" class="audio-list">
+  <% @manuals.each do |audio| %>
     <li>
       <%= link_to audio.name, audio_path(audio) %>
     </li>
-  </ul>
-<% end %>
+  <% end %>
+</ul>

@@ -13,14 +13,16 @@
 
           <div class="columns large-8">
             <ul class="repositories">
-              <% @repositories.each_with_index do |repo, idx| %>
-                <li>
-                  <%= repo %>
+              <% if @repositories %>
+                <% @repositories.each_with_index do |repo, idx| %>
+                  <li>
+                    <%= repo %>
 
-                  &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 
-                  <%= link_to 'Delete', '/settings/repositories?index=' + idx.to_s, method: 'delete' %>
-                </li>
+                    <%= link_to 'Delete', '/settings/repositories?index=' + idx.to_s, method: 'delete', id: 'repo_' + idx.to_s %>
+                  </li>
+                <% end %>
               <% end %>
             </ul>
           </div>

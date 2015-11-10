@@ -27,6 +27,14 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'quiet_assets', '~> 1.1.0'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'capybara'
+  gem 'capybara-email'
+  gem 'shoulda-matchers', '~> 2.8.0'
+  gem 'poltergeist'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner', '~> 1.4.1'
 end
 
 group :development do

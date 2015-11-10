@@ -32,4 +32,10 @@
   </div>
 <% end %>
 
+<% if action_name == 'edit' %>
+  <%= link_to audio_path(@audio), method: :delete, id: 'delete', class: 'button tiny alert right' do %>
+    <i class="fi-trash"></i>
+  <% end %>
+<% end %>
+
 <br/><br/>
