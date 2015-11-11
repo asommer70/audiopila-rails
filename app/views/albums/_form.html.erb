@@ -1,0 +1,52 @@
+<br/><br/>
+
+<%= form_for(@album) do |f| %>
+  <% if @album.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@album.errors.count, "error") %> prohibited this album from being saved:</h2>
+
+      <ul>
+      <% @album.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.text_field :name, placeholder: 'Name' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.text_field :artist, placeholder: 'Artist' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.text_field :year, value: @album.year ? @album.year.strftime('%Y') : '', placeholder: 'Year' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.text_field :genre, placeholder: 'Genre' %>
+    </div>
+  </div>
+
+
+  <div class="actions">
+    <%= f.submit 'Save Album', class: 'button small success' %>
+  </div>
+<% end %>
+
+<% if action_name == 'edit' %>
+  <%= link_to album_path(@album), method: :delete, id: 'delete', class: 'button tiny alert right' do %>
+    <i class="fi-trash"></i>
+  <% end %>
+<% end %>
+
+<br/><br/>

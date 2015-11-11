@@ -1,0 +1,35 @@
+
+<h2><%= @album.name %></h2>
+<ul class="no-bullet">
+  <li>
+    <strong>Artist:</strong> <%= @album.artist %>
+  </li>
+  <li>
+    <strong>Released:</strong> <%= @album.year.strftime('%Y') %>
+  </li>
+  <li>
+    <strong>Genre:</strong> <span class="label warning"><%= @album.genre %></span>
+  </li>
+</ul>
+
+<br/><hr/><br/>
+
+<% unless @album.audios.empty? %>
+  <ul class="no-bullet">
+    <% @album.audios.each do |audio| %>
+      <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player">
+        <% if audio.path.index('http') %>
+          <source src="<%= audio.path %>"></source>
+        <% else %>
+          <source src="<%= stream_path(audio.id) %>"></source>
+        <% end %>
+      </audio>
+    <% end %>
+  </ul>
+<% end %>
+
+<br/><hr/><br/>
+
+
+<%= link_to 'Edit', edit_album_path(@album), class: 'button small' %> |
+<%= link_to 'Back', albums_path, class: 'button small' %>

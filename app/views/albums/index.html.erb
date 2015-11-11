@@ -1,0 +1,20 @@
+<h1>Albums</h1>
+
+<%= link_to 'New Album', new_album_path, class: 'button small' %>
+<br/><br/>
+
+<% unless @albums.blank? %>
+  <ul class="album-list">
+    <% @albums.each do |album| %>
+      <li>
+        <%= link_to album.name, album_path(album) %>
+      </li>
+    <% end %>
+  </ul>
+
+<% else %>
+  <p>
+    No albums... yet.  Create one <%= link_to 'here', new_album_path %>.
+  </p>
+<% end %>
+<br>
