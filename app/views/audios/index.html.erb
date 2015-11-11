@@ -1,5 +1,8 @@
 <h2>Audio Files</h2>
 
+<%= link_to 'New Audio', new_audio_path, class: 'button small' %>
+<br/><br/>
+
 <% unless @repositories.blank? %>
   <% @repositories.each_with_index do |repo, idx| %>
     <h3>Repository:</h3>

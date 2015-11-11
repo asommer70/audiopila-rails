@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104004528) do
+ActiveRecord::Schema.define(version: 20151111042814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "albums", force: :cascade do |t|
+    t.string   "name"
+    t.date     "year"
+    t.string   "artist"
+    t.string   "genre"
+    t.integer  "audios_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "albums", ["audios_id"], name: "index_albums_on_audios_id", using: :btree
 
   create_table "audios", force: :cascade do |t|
     t.datetime "created_at",    null: false
@@ -22,8 +34,10 @@ ActiveRecord::Schema.define(version: 20151104004528) do
     t.string   "name"
     t.string   "path"
     t.integer  "playback_time"
+    t.integer  "album_id"
   end
 
+  add_index "audios", ["album_id"], name: "index_audios_on_album_id", using: :btree
   add_index "audios", ["name"], name: "index_audios_on_name", using: :btree
 
   create_table "settings", force: :cascade do |t|
@@ -37,4 +51,5 @@ ActiveRecord::Schema.define(version: 20151104004528) do
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
 
+  add_foreign_key "audios", "albums"
 end
