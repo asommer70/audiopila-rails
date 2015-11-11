@@ -1,5 +1,6 @@
 class AlbumsController < ApplicationController
   before_action :set_album, only: [:show, :edit, :update, :destroy]
+  before_filter :modify_date, :only => [:create, :update]
 
   # GET /albums
   # GET /albums.json
@@ -40,12 +41,9 @@ class AlbumsController < ApplicationController
   # PATCH/PUT /albums/1
   # PATCH/PUT /albums/1.json
   def update
-    year = Date.strptime(album_params[:year], '%Y') unless album_params[:year].blank?
-
     respond_to do |format|
       if @album.update(album_params)
-        @album.year = year
-        @album.save
+        puts "@album.yeaer: #{@album.year}"
 
         format.html { redirect_to @album, notice: 'Album was successfully updated.' }
         format.json { render :show, status: :ok, location: @album }
@@ -70,6 +68,12 @@ class AlbumsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_album
       @album = Album.find(params[:id])
+    end
+
+    # Need to create a Date object before year is saved to the database.
+    def modify_date
+      year = Date.strptime(album_params[:year], '%Y') unless album_params[:year].blank?
+      params[:album][:year] = year
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

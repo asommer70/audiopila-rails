@@ -5,7 +5,7 @@
     <strong>Artist:</strong> <%= @album.artist %>
   </li>
   <li>
-    <strong>Released:</strong> <%= @album.year.strftime('%Y') %>
+    <strong>Released:</strong> <%= @album.year.strftime('%Y') if @album.year %>
   </li>
   <li>
     <strong>Genre:</strong> <span class="label warning"><%= @album.genre %></span>
