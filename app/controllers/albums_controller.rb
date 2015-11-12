@@ -26,6 +26,7 @@ class AlbumsController < ApplicationController
   # POST /albums.json
   def create
     @album = Album.new(album_params)
+    puts "album_params: #{album_params}"
 
     respond_to do |format|
       if @album.save
@@ -43,8 +44,6 @@ class AlbumsController < ApplicationController
   def update
     respond_to do |format|
       if @album.update(album_params)
-        puts "@album.yeaer: #{@album.year}"
-
         format.html { redirect_to @album, notice: 'Album was successfully updated.' }
         format.json { render :show, status: :ok, location: @album }
       else
@@ -78,6 +77,6 @@ class AlbumsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def album_params
-      params[:album].permit(:name, :artist, :year, :genre, audios: [])
+      params[:album].permit(:name, :artist, :year, :genre, :audio_ids => [])
     end
 end

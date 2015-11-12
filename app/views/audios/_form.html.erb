@@ -27,6 +27,19 @@
 
   <div class="row">
     <div class="columns large-4">
+      <%= f.label :album %>
+      <%= f.select :album_id,
+                   Album.all.map { |a| [a.name, a.id] },
+                   { include_blank: true },
+                   { class: 'chosen-select'}
+      %>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="row">
+    <div class="columns large-4">
       <%= f.submit 'Save Audio File', class: 'button small success' %>
     </div>
   </div>

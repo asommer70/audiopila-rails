@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151111042814) do
+ActiveRecord::Schema.define(version: 20151112182854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,12 +21,20 @@ ActiveRecord::Schema.define(version: 20151111042814) do
     t.date     "year"
     t.string   "artist"
     t.string   "genre"
-    t.integer  "audios_id"
+    t.integer  "audios"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "albums", ["audios_id"], name: "index_albums_on_audios_id", using: :btree
+  add_index "albums", ["audios"], name: "index_albums_on_audios", using: :btree
+
+  create_table "albums_audios", force: :cascade do |t|
+    t.integer "album_id"
+    t.integer "audio_id"
+  end
+
+  add_index "albums_audios", ["album_id"], name: "index_albums_audios_on_album_id", using: :btree
+  add_index "albums_audios", ["audio_id"], name: "index_albums_audios_on_audio_id", using: :btree
 
   create_table "audios", force: :cascade do |t|
     t.datetime "created_at",    null: false
@@ -37,7 +45,6 @@ ActiveRecord::Schema.define(version: 20151111042814) do
     t.integer  "album_id"
   end
 
-  add_index "audios", ["album_id"], name: "index_audios_on_album_id", using: :btree
   add_index "audios", ["name"], name: "index_audios_on_name", using: :btree
 
   create_table "settings", force: :cascade do |t|
@@ -51,5 +58,4 @@ ActiveRecord::Schema.define(version: 20151111042814) do
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
 
-  add_foreign_key "audios", "albums"
 end

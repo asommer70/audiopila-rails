@@ -17,14 +17,19 @@
 <% unless @album.audios.empty? %>
   <ul class="no-bullet">
     <% @album.audios.each do |audio| %>
-      <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player">
-        <% if audio.path.index('http') %>
-          <source src="<%= audio.path %>"></source>
-        <% else %>
-          <source src="<%= stream_path(audio.id) %>"></source>
-        <% end %>
-      </audio>
-    <% end %>
+      <li>
+        <strong><%= audio.name %></strong>
+        <br/>
+
+        <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player">
+          <% if audio.path.index('http') %>
+            <source src="<%= audio.path %>"></source>
+          <% else %>
+            <source src="<%= stream_path(audio.id) %>"></source>
+          <% end %>
+        </audio>
+      <% end %>
+    </li>
   </ul>
 <% end %>
 

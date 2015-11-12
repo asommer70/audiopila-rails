@@ -1,6 +1,10 @@
 
 <h2><%= @audio.name %></h2>
 
+<p>
+  <strong>Album:</strong> <%= link_to @audio.album.name, @audio.album if @audio.album %>
+</p>
+
 <br/><hr/><br/>
 
 <audio id="<%= @audio.id %>" controls data-audio="<%= @audio.id %>" class="player">

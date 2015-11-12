@@ -37,6 +37,21 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.label :audios %>
+      <%= f.select :audio_ids,
+                   Audio.all.map { |a| [a.name, a.id] },
+                   { include_blank: true },
+                   { class: 'chosen-select',
+                     multiple: true,
+                     data: { 'placeholder' => 'Start typing audio file name...' }
+                   }
+      %>
+    </div>
+  </div>
+
+  <br/>
 
   <div class="actions">
     <%= f.submit 'Save Album', class: 'button small success' %>
@@ -44,7 +59,7 @@
 <% end %>
 
 <% if action_name == 'edit' %>
-  <%= link_to album_path(@album), method: :delete, id: 'delete', class: 'button tiny alert right' do %>
+  <%= link_to @album, method: :delete, id: 'delete', class: 'button tiny alert right' do %>
     <i class="fi-trash"></i>
   <% end %>
 <% end %>
