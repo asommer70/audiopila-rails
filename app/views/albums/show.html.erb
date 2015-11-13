@@ -18,16 +18,22 @@
   <ul class="no-bullet">
     <% @album.audios.each do |audio| %>
       <li>
-        <strong><%= audio.name %></strong>
-        <br/>
 
-        <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player">
-          <% if audio.path.index('http') %>
-            <source src="<%= audio.path %>"></source>
-          <% else %>
-            <source src="<%= stream_path(audio.id) %>"></source>
-          <% end %>
-        </audio>
+        <div class="row">
+          <div class="columns large-6 text-center panel">
+            <strong><%= audio.name %></strong>
+            <br/>
+            <%= image_tag @album.image.thumb('300x300').url if @album.image %>
+            <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player">
+              <% if audio.path.index('http') %>
+                <source src="<%= audio.path %>"></source>
+              <% else %>
+                <source src="<%= stream_path(audio.id) %>"></source>
+              <% end %>
+            </audio>
+          </div>
+        </div>
+
       <% end %>
     </li>
   </ul>

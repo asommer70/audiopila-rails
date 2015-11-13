@@ -3,4 +3,6 @@ class Album < ActiveRecord::Base
   validates :artist, presence: true
 
   has_many :audios
+
+  dragonfly_accessor :image
 end

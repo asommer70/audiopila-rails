@@ -53,6 +53,15 @@
 
   <br/>
 
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.label :image, 'Upload a cover image?'  %>
+      <%= f.file_field :image %>
+    </div>
+  </div>
+
+  <br/>
+
   <div class="actions">
     <%= f.submit 'Save Album', class: 'button small success' %>
   </div>

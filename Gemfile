@@ -22,6 +22,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'foundation-rails'
 gem 'foundation-icons-sass-rails'
 gem 'rails-settings-cached', '~> 0.4.0'
+gem 'dragonfly', '~> 1.0.12'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
