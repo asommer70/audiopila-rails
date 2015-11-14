@@ -12,9 +12,7 @@ ready_audio = ->
 
     # Save playback_time when paused.
     $('.player').on 'pause', (e) ->
-      this.focus()
       $player = $(this)
-      $player.focus()
 
       # Do some Maths on the playback time.
       playbackTime = getPlaybackTime(this.currentTime)
@@ -91,7 +89,6 @@ getPlaybackTime = (time) ->
 
 
 play_location = (audio) ->
-  audio.focus()
   self = audio
   $player = $(audio)
 

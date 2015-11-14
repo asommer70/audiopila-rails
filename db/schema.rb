@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113111832) do
+ActiveRecord::Schema.define(version: 20151114112513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,11 +22,12 @@ ActiveRecord::Schema.define(version: 20151113111832) do
     t.string   "artist"
     t.string   "genre"
     t.integer  "audios"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.string   "image_uid"
     t.string   "image_name"
     t.string   "image"
+    t.integer  "current_audio"
   end
 
   add_index "albums", ["audios"], name: "index_albums_on_audios", using: :btree
@@ -46,6 +47,7 @@ ActiveRecord::Schema.define(version: 20151113111832) do
     t.string   "path"
     t.integer  "playback_time"
     t.integer  "album_id"
+    t.integer  "album_order"
   end
 
   add_index "audios", ["name"], name: "index_audios_on_name", using: :btree
