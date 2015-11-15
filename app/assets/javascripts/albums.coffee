@@ -24,6 +24,7 @@ ready_albums = ->
             media_control.current_audio = media_control.find_current_aduio(album)
         else
           media_control.current_audio = {
+            album: album,
             audio: album.audios[0],
             current_player: $('#' + album.audios[0].id)[0],
           }
@@ -37,43 +38,50 @@ ready_albums = ->
       media_control.current_audio.current_player.pause()
 
   change_audio: (id, direction) ->
-    $.get("/albums/#{id}.json")
-      .then (album) ->
-        if media_control.current_audio?
-          media_control.current_audio.current_player.pause()
-
+    # $.get("/albums/#{id}.json")
+    #   .then (album) ->
+        if !media_control.current_audio?
+          media_control.play(id)
+          # media_control.pause(id)
+          # media_control.change_audio(id, direction)
+        else if media_control.current_audio?
+          #media_control.current_audio.current_player.pause()
 
           # Find the index of the next/previous Audio
-          for audio, idx in album.audios
+          audios = media_control.current_audio.album.audios
+          for audio, idx in audios
             if media_control.current_audio.audio.id == audio.id
               current = idx + direction
-              if current == album.audios.length
+              if current == audios.length
                 current = 0
               else if current == -1
-                current = album.audios.length - 1
+                current = media_control.current_audio.album.audios.length - 1
               media_control.current_audio = {
-                audio: album.audios[current],
-                current_player: $('#' + album.audios[current].id)[0],
+                album: media_control.current_audio.album
+                audio: audios[current],
+                current_player: $('#' + audios[current].id)[0],
               }
               break
-        else if album.current_audio?
+        else if media_control.current_audio.album.current_audio?
           # Album isn't playing so play the last audio.
-          media_control.current_audio = media_control.find_current_aduio(album)
+          media_control.current_audio = media_control.find_current_aduio(media_control.album)
         else
+
           # Album doesn't have a current_audio so start the first, or the last, audio.
           if direction == -1
-            current = album.audios.length - 1
+            current = media_control.album.audios.length - 1
           else
             current = 0
 
           media_control.current_audio = {
-            audio: album.audios[current],
-            current_player: $('#' + album.audios[current].id)[0],
+            album: media_control.album,
+            audio: media_control.album.audios[current],
+            current_player: $('#' + media_control.album.audios[current].id)[0],
           }
 
 
         media_control.current_audio.current_player.play()
-        media_control.update_album(album, media_control.current_audio)
+        media_control.update_album(media_control.current_audio.album, media_control.current_audio)
 
   find_current_aduio: (album) ->
     for audio, idx in album.audios
@@ -89,6 +97,7 @@ ready_albums = ->
           previous = idx
 
         return {
+          album: album,
           audio: audio,
           current_player: $('#' + audio.id)[0],
         }

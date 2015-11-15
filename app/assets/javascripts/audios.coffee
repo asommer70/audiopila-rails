@@ -66,12 +66,19 @@ ready_audio = ->
 
     .on 'ended', (e) ->
       $player = $(this)
+      console.log($player)
 
       $.ajax({
         url: '/audios/' + $player.data().audio  + '.json',
         method: 'put',
         data: 'audio[playback_time]=' + 0
       })
+      # 
+      # if media_control.current_audio.audio.id == $player.data().audio
+      #   media_control.current_audio = {
+      #     audio: album.audios[0],
+      #     current_player: $('#' + album.audios[0].id)[0],
+      #   }
 
 
 
