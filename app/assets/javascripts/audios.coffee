@@ -73,12 +73,17 @@ ready_audio = ->
         method: 'put',
         data: 'audio[playback_time]=' + 0
       })
-      # 
-      # if media_control.current_audio.audio.id == $player.data().audio
-      #   media_control.current_audio = {
-      #     audio: album.audios[0],
-      #     current_player: $('#' + album.audios[0].id)[0],
-      #   }
+
+      if media_control? && media_control.current_audio.audio.id == $player.data().audio
+        # media_control.current_audio = {
+        #   album: media_control.current_audio.album,
+        #   audio: album.audios[0],
+        #   current_player: $('#' + album.audios[0].id)[0]
+        # }
+        #
+        # Need to figure out how to automatically advance to the next Audio in the Album if Shuffle is not on.
+        #
+        media_control.change_audio(media_control.current_audio.album.id, 'next')
 
 
 

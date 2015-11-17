@@ -13,10 +13,16 @@ ready_albums = ->
     if $this.hasClass('change')
       media_control.change_audio($this.data().album, parseInt($this.data().function))
     else
+      console.log('this.data().function:', $this.data().function)
       media_control[$this.data().function]($this.data().album)
+      console.log('after this.data().function:', $this.data().function)
 
 @media_control = {
   play: (id) ->
+    $('#play').toggleClass('warning')
+    if !$('#pause').hasClass('warning')
+      $('#pause').toggleClass('warning')
+
     $.get("/albums/#{id}.json")
       .then (album) ->
         if album.current_audio != null
@@ -35,7 +41,15 @@ ready_albums = ->
 
   pause: (id) ->
     if media_control.current_audio?
-      media_control.current_audio.current_player.pause()
+      $('#pause').toggleClass('warning')
+      if !$('#play').hasClass('warning')
+        $('#play').toggleClass('warning')
+
+      if media_control.current_audio.current_player.paused
+        media_control.current_audio.current_player.play()
+        $('#play').toggleClass('warning')
+      else
+        media_control.current_audio.current_player.pause()
 
   change_audio: (id, direction) ->
     # $.get("/albums/#{id}.json")
@@ -45,7 +59,7 @@ ready_albums = ->
           # media_control.pause(id)
           # media_control.change_audio(id, direction)
         else if media_control.current_audio?
-          #media_control.current_audio.current_player.pause()
+          media_control.current_audio.current_player.pause()
 
           # Find the index of the next/previous Audio
           audios = media_control.current_audio.album.audios
@@ -82,6 +96,21 @@ ready_albums = ->
 
         media_control.current_audio.current_player.play()
         media_control.update_album(media_control.current_audio.album, media_control.current_audio)
+
+  looper: (id) ->
+    console.log('setting loop...', id)
+    # Give some feedback.
+    $('#looper').toggleClass('warning')
+
+    if media_control.loop?
+      media_control.loop = false
+    else
+      media_control.loop = true
+
+  shuffle: (id) ->
+    console.log('shuffling...')
+    $('#shuffle').toggleClass('warning')
+
 
   find_current_aduio: (album) ->
     for audio, idx in album.audios
