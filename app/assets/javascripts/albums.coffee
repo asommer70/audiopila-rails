@@ -66,6 +66,7 @@ ready_albums = ->
           for audio, idx in audios
             if media_control.current_audio.audio.id == audio.id
               current = idx + direction
+              console.log('current:', current)
               if current == audios.length
                 current = 0
               else if current == -1
@@ -102,14 +103,18 @@ ready_albums = ->
     # Give some feedback.
     $('#looper').toggleClass('warning')
 
-    if media_control.loop?
-      media_control.loop = false
+    if media_control.looping?
+      media_control.looping = false
     else
-      media_control.loop = true
+      media_control.looping = true
 
   shuffle: (id) ->
     console.log('shuffling...')
     $('#shuffle').toggleClass('warning')
+    if media_control.shuffling?
+      media_control.shuffling = false
+    else
+      media_control.shuffling = true
 
 
   find_current_aduio: (album) ->
@@ -117,13 +122,6 @@ ready_albums = ->
       if audio.id == album.current_audio
         audio = audio
         current_player = $('#' + audio.id)[0]
-
-        if idx + 1 == album.audios.length
-          next = 0
-          previous = album.audios.length - 1
-        else
-          next = idx + 1
-          previous = idx
 
         return {
           album: album,
