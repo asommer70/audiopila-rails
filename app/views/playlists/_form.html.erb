@@ -1,0 +1,64 @@
+<br/><br/>
+
+<%= form_for(@playlist) do |f| %>
+  <% if @playlist.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@playlist.errors.count, "error") %> prohibited this playlist from being saved:</h2>
+
+      <ul>
+      <% @playlist.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.text_field :name, placeholder: 'Name' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.text_field :description, placeholder: 'Description' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.label :audios %>
+      <%= f.select :audio_ids,
+                   Audio.all.map { |a| [a.name, a.id] },
+                   { include_blank: true },
+                   { class: 'chosen-select',
+                     multiple: true,
+                     data: { 'placeholder' => 'Start typing audio file name...' }
+                   }
+      %>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="row">
+    <div class="columns large-4">
+      <%= f.label :image, 'Upload a cover image?'  %>
+      <%= f.file_field :image %>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="actions">
+    <%= f.submit 'Save Playlist', class: 'button small success' %>
+  </div>
+<% end %>
+
+<% if action_name == 'edit' %>
+  <%= link_to @playlist, method: :delete, id: 'delete', class: 'button tiny alert right' do %>
+    <i class="fi-trash"></i>
+  <% end %>
+<% end %>
+
+<br/><br/>

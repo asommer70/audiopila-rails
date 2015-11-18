@@ -4,7 +4,7 @@ describe 'Displaying Albums' do
 
   let!(:album) { Album.create(name: 'Rubber Factory', artist: 'The Black Keys') }
 
-  it 'displays a repository' do
+  it 'displays albums' do
     visit albums_path
 
     expect(page).to have_content('Rubber Factory')

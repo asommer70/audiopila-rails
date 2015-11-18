@@ -18,7 +18,7 @@ RSpec.describe Album, type: :model do
   end
 
   context 'creation' do
-    it 'can create repositories settings' do
+    it 'can create albums' do
       Album.create(valid_attributes)
       expect(Album.last).to be_truthy
       expect(Album.last.name).to eq('Rubber Factory')

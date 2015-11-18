@@ -1,0 +1,20 @@
+<h1>Playlists</h1>
+
+<%= link_to 'New Playlist', new_playlist_path, class: 'button small' %>
+<br/><br/>
+
+<% unless @playlists.blank? %>
+  <ul class="album-list">
+    <% @playlists.each do |playlist| %>
+      <li>
+        <%= link_to playlist.name, playlist_path(playlist) %>
+      </li>
+    <% end %>
+  </ul>
+
+<% else %>
+  <p>
+    No playlists... yet.  Create one <%= link_to 'here', new_playlist_path %>.
+  </p>
+<% end %>
+<br>
