@@ -10,12 +10,42 @@ ready_albums = ->
   #
   $('.control').on 'click', (e) ->
     $this = $(this)
+    console.log('control clicked...')
     if $this.hasClass('change')
       media_control.change_audio($this.data().album, parseInt($this.data().function))
     else
       console.log('this.data().function:', $this.data().function)
       media_control[$this.data().function]($this.data().album)
       console.log('after this.data().function:', $this.data().function)
+
+
+  #
+  # Handle re-ordering of Audios an Album.
+  #
+  $('#album-audio-list').sortable({
+    handle: '.handle',
+    sortableClass: 'fade',
+  })
+
+  $('#album-audio-list').bind 'sortupdate', (e, ui) ->
+
+    # Find the audio at the oldIndex.
+    $oldIndexAudio = $($('.album_audio')[ui.oldindex])
+
+    # Send a PUT to each Audio to update the album_order field.
+    $.ajax({
+      url: '/audios/' + $oldIndexAudio.data().audio + '.json'
+      method: 'put',
+      data: 'audio[album_order]=' + (ui.oldindex + 1)
+    })
+
+    console.log('audio[album_order]=' + (ui.index + 1))
+    $.ajax({
+      url: '/audios/' + ui.item.data().audio + '.json'
+      method: 'put',
+      data: 'audio[album_order]=' + (ui.index + 1)
+    })
+
 
 @media_control = {
   play: (id) ->
@@ -25,7 +55,8 @@ ready_albums = ->
 
     $.get("/albums/#{id}.json")
       .then (album) ->
-        if album.current_audio != null
+        console.log('album:', album)
+        if album.current_audio?
           if !media_control.current_audio?
             media_control.current_audio = media_control.find_current_aduio(album)
         else

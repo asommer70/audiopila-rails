@@ -4,3 +4,23 @@
 .chosen-choices {
   font-size: 14px;
 }
+
+.fade {
+  opacity: 0.5;
+}
+
+.album-details {
+  font-size: 24px;
+}
+
+#album-audio-list {
+  border: 1px solid #dddddd;
+  padding: 10px;
+
+  & li {
+    padding: 10px;
+  }
+  & li:nth-child(odd) {
+    background-color: #eeeeee;
+  }
+}

@@ -1,16 +1,25 @@
 
 <h2><%= @album.name %></h2>
-<ul class="no-bullet">
-  <li>
-    <strong>Artist:</strong> <%= @album.artist %>
-  </li>
-  <li>
-    <strong>Released:</strong> <%= @album.year.strftime('%Y') if @album.year %>
-  </li>
-  <li>
-    <strong>Genre:</strong> <span class="label warning"><%= @album.genre %></span>
-  </li>
-</ul>
+<div class="row">
+  <div class="columns large-4">
+    <%= image_tag @album.image.url, class: 'th' if @album.image %>
+  </div>
+  <div class="columns large-6 large-offset-1">
+    <ul class="no-bullet album-details">
+      <li>
+        <strong>Artist:</strong> <%= @album.artist %>
+      </li>
+      <li>
+        <strong>Released:</strong> <%= @album.year.strftime('%Y') if @album.year %>
+      </li>
+      <li>
+        <strong>Genre:</strong> <span class="label warning"><%= @album.genre %></span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<br/>
 
 <div class="row">
   <div class="columns large-6">
@@ -37,35 +46,44 @@
       </span>
     </div>
   </div>
+  <div class="columns large-6">
+    <% unless @album.audios.empty? %>
+      <ul id="album-audio-list" class="no-bullet">
+        <% @album.audios.each do |audio| %>
+          <li data-audio="<%= audio.id %>" class="album_audio" data-album="<%= @album.id %>">
+
+            <div class="row">
+              <div class="columns large-12">
+                <strong><%= link_to audio.name, audio %></strong>
+                <br/>
+
+                <div class="row">
+                  <div class="columns large-6">
+                    <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player">
+                      <% if audio.path.index('http') %>
+                        <source src="<%= audio.path %>"></source>
+                      <% else %>
+                        <source src="<%= stream_path(audio.id) %>"></source>
+                      <% end %>
+                    </audio>
+                  </div>
+                  <div class="columns large-2 right">
+                    <div class="button button tiny secondary handle left">
+                      <i class="fi-arrows-in"></i>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          <% end %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
 </div>
 
-
-<br/><hr/><br/>
-
-<% unless @album.audios.empty? %>
-  <ul class="no-bullet">
-    <% @album.audios.each do |audio| %>
-      <li>
-
-        <div class="row">
-          <div class="columns large-6 text-center panel">
-            <strong><%= link_to audio.name, audio %></strong>
-            <br/>
-            <%= image_tag @album.image.thumb('300x300').url if @album.image %>
-            <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player">
-              <% if audio.path.index('http') %>
-                <source src="<%= audio.path %>"></source>
-              <% else %>
-                <source src="<%= stream_path(audio.id) %>"></source>
-              <% end %>
-            </audio>
-          </div>
-        </div>
-
-      <% end %>
-    </li>
-  </ul>
-<% end %>
 
 <br/><hr/><br/>
 
