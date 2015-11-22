@@ -3,5 +3,8 @@ class Audio < ActiveRecord::Base
   validates :path, presence: true
 
   belongs_to :album
-  has_and_belongs_to_many :playlists
+  has_many :playlist_audios
+  has_many :playlists, through: :playlist_audios
+  #has_many :playlists, :class_name => 'PlaylistAudios', :foreign_key => 'audio_id'
+
 end

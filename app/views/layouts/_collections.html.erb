@@ -1,0 +1,103 @@
+
+<h2><%= @collection.name %></h2>
+<div class="row">
+  <div class="columns large-4">
+    <%= image_tag @collection.image.url, class: 'th' if @collection.image %>
+  </div>
+  <div class="columns large-6 large-offset-1">
+    <ul class="no-bullet collection-details">
+      <% if controller_name == 'playlists' %>
+        <li>
+          <strong>Description:</strong> <%= @collection.description %>
+        </li>
+      <% else %>
+        <li>
+          <strong>Artist:</strong> <%= @album.artist %>
+        </li>
+        <li>
+          <strong>Released:</strong> <%= @album.year.strftime('%Y') if @album.year %>
+        </li>
+        <li>
+          <strong>Genre:</strong> <span class="label warning"><%= @album.genre %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<br/>
+
+<div class="row">
+  <div class="columns large-6">
+    <h4>Play <%= @collection.name %></h4>
+    <div class="controls">
+      <button class="warning large control change" data-function="-1" data-collection="<%= @collection.id %>"><i class="fi-previous"></i></button>
+      <button id="play" class="warning large control" data-function="play" data-collection="<%= @collection.id %>"><i class="fi-play"></i></button>
+      <button id="pause" class="warning large control" data-function="pause" data-collection="<%= @collection.id %>"><i class="fi-pause"></i></button>
+      <button class="warning large control change" data-function="1" data-collection="<%= @collection.id %>"><i class="fi-next"></i></button>
+      <br/>
+      <button id="looper" class="warning small control" data-function="looper" data-collection="<%= @collection.id %>"><i class="fi-loop"></i></button>
+      <button id="shuffle" class="warning small control" data-function="shuffle" data-collection="<%= @collection.id %>">
+        <i class="fi-shuffle"></i>
+      </button>
+    </div>
+    <div class="current-song">
+      <h5>Current Audio</h5>
+      <span id="playing_audio">
+        <% if @last_audio %>
+          <strong><%= @last_audio.name %></strong> was last played.
+        <% else %>
+          Don't know what was last played...
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <div class="columns large-6">
+    <% unless @collection.audios.empty? %>
+      <ul id="audio-list" class="no-bullet">
+        <% @collection.audios.each do |audio| %>
+          <li data-audio="<%= audio.id %>" class="audio" data-collection="<%= @collection.id %>"
+            data-playlist-audio="<%= audio.playlist_audios.find_by(audio_id: audio.id, playlist_id: @playlist.id).id  if @playlist %>">
+
+            <div class="row">
+              <div class="columns large-12">
+                <strong><%= link_to audio.name, audio %></strong>
+                <br/>
+
+                <div class="row">
+                  <div class="columns large-6">
+                    <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player" autobuffer="false">
+                      <% if audio.path.index('http') %>
+                        <source src="<%= audio.path %>"></source>
+                      <% else %>
+                        <source src="<%= stream_path(audio.id) %>"></source>
+                      <% end %>
+                    </audio>
+                  </div>
+                  <div class="columns large-2 right">
+                    <div class="button button tiny secondary handle left">
+                      <i class="fi-arrows-in"></i>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          <% end %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</div>
+
+
+<br/><hr/><br/>
+
+<% if controller_name == 'playlists' %>
+  <%= link_to 'Edit', edit_playlist_path(@playlist), class: 'button small' %> |
+  <%= link_to 'Back', playlists_path, class: 'button small' %>
+<% else %>
+  <%= link_to 'Edit', edit_album_path(@album), class: 'button small' %> |
+  <%= link_to 'Back', albums_path, class: 'button small' %>
+<% end %>

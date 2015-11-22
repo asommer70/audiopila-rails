@@ -4,6 +4,17 @@
 <p>
   <strong>Album:</strong> <%= link_to @audio.album.name, @audio.album if @audio.album %>
 </p>
+<p>
+  <ul id="playlists">
+    <% if @audio.playlists %>
+      <% @audio.playlists.each do |playlist| %>
+        <li>
+          <%= link_to playlist.name, playlist_path(playlist) %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</p>
 
 <br/><hr/><br/>
 

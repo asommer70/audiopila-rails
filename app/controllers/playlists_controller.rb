@@ -10,7 +10,12 @@ class PlaylistsController < ApplicationController
   # GET /playlists/1
   # GET /playlists/1.json
   def show
-    @last_audio = Playlist.find(@playlist.current_audio) if @playlist.current_audio
+    #@collection = Playlist.includes(:playlist_order).order('playlist_audios.playlist_order')
+    @collection = @playlist
+    @audios = Playlist.find(params[:id]).audios.order('playlist_audios.playlist_order')
+    puts "@audios: #{@audios.inspect}"
+    #@collection = Playlist.joins(:playlist_audio => :playlist_audio).order("playlist_audios.playlist_order")
+    @last_audio = Audio.find(@playlist.current_audio) if @playlist.current_audio
   end
 
   # GET /playlists/new
@@ -52,6 +57,16 @@ class PlaylistsController < ApplicationController
     end
   end
 
+  def update_playlist_audio
+    playlist_audio = PlaylistAudio.find(params[:id])
+    if playlist_audio
+      playlist_audio.update(playlist_params)
+      render json: true
+    else
+      render json: { error: playlist_audio.errors.full_messages }
+    end
+  end
+
   # DELETE /playlists/1
   # DELETE /playlists/1.json
   def destroy
@@ -70,6 +85,6 @@ class PlaylistsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def playlist_params
-      params[:playlist].permit(:name, :description, :image, :current_audio, :audio_ids => [])
+      params[:playlist].permit(:name, :description, :image, :current_audio, :playlist_order, :audio_ids => [])
     end
 end
