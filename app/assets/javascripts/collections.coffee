@@ -10,9 +10,48 @@ ready_collections = ->
     allow_single_deselect: true
     no_results_text: 'No results matched'
 
+  #
+  # Handle "global" playback controls.
+  #
+  $g_play = $('#g_play')
+  if !media_control.current_audio?
+    $('.global.control').attr('disabled', 'true')
+
+  $(document).on 'media-play', (e) ->
+    # Enable buttons and add the collection id to the data element.
+    $('.global.control').attr('disabled', null)
+    $('.global.control').data('collection', media_control.current_audio.collection.id)
+
+    # Adjust the play/pause button.
+    $g_play.html('<i class="fi-pause"></i>')
+    $g_play.data('function', 'pause')
+
+    # Display the currenlty playing audio.
+    media_control.set_g_current_audio()
+
+    # Handle the play/pause button clicks.
+    $g_play.on 'click', (e) ->
+      media_control.global_play_button($g_play)
+
+    # Handle the previous and next buttons.
+    $('.global.control.change').on 'click', (e) ->
+      media_control.set_g_current_audio()
+
+    # When the page changes put an invisible audio element in the nav so that it continues to play.
+    # $(document).on 'page:change', (e) ->
+    #   console.log('current_player:', media_control.current_audio.current_player)
+    #   $(media_control.current_audio.current_player).css('display', 'none')
+    #   $('#controller').append(media_control.current_audio.current_player)
+    #   media_control.current_audio.current_player.play()
+
+
+  $(document).on 'media-pause', (e) ->
+    $('.global.control').attr('disabled', null)
+    $('#g_play').html('<i class="fi-play"></i>')
+
 
   #
-  # Handle playback controls.
+  # Handle "show page" playback controls.
   #
   $('.control').on 'click', (e) ->
     $this = $(this)
@@ -60,6 +99,7 @@ ready_collections = ->
 
 @media_control = {
   play: (action, id) ->
+    console.log('action:', action, 'id:', id)
     $('#play').toggleClass('warning')
     if !$('#pause').hasClass('warning')
       $('#pause').toggleClass('warning')
@@ -78,9 +118,11 @@ ready_collections = ->
 
         media_control.current_audio.current_player.play()
         media_control.update_collection(action, collection, media_control.current_audio)
+        $(document).trigger('media-play')
 
 
   pause: (id) ->
+    console.log('pause id:', id)
     if media_control.current_audio?
       $('#pause').toggleClass('warning')
       if !$('#play').hasClass('warning')
@@ -91,6 +133,7 @@ ready_collections = ->
         $('#play').toggleClass('warning')
       else
         media_control.current_audio.current_player.pause()
+      $(document).trigger('media-pause')
 
   change_audio: (id, direction, action) ->
     if !media_control.current_audio?
@@ -141,6 +184,7 @@ ready_collections = ->
       media_control.looping = false
     else
       media_control.looping = true
+    $(document).trigger('media-loop')
 
   shuffle: (id) ->
     $('#shuffle').toggleClass('warning')
@@ -148,7 +192,7 @@ ready_collections = ->
       media_control.shuffling = false
     else
       media_control.shuffling = true
-
+    $(document).trigger('media-shuffle')
 
   find_current_audio: (collection) ->
     for audio, idx in collection.audios
@@ -175,6 +219,28 @@ ready_collections = ->
       method: 'put',
       data: field + current_audio.audio.id
     })
+
+  global_play_button: (button) ->
+    if !button.is(':disabled')
+      if media_control.current_audio.current_player.paused
+        $(document).trigger('media-pause')
+      else
+        $(document).trigger('media-play')
+
+  set_g_current_audio: () ->
+    # Determine if collection is album or playlist.
+    if media_control.current_audio.collection.description?
+      url = '/playlists/'
+    else
+      url = '/albums/'
+
+    $('#g_current_audio').html("""
+      <strong>Currently Playing:</strong> <br/>
+      #{media_control.current_audio.audio.name}
+      <br/>
+      <strong>From:</strong> <a class="collection-link" href="#{url}#{media_control.current_audio.collection.id}">#{media_control.current_audio.collection.name}</a>
+    """)
+
 }
 
 $(document).ready(ready_collections)

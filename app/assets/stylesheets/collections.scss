@@ -1,6 +1,5 @@
-// Place all the styles related to the albums controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "foundation_and_overrides";
+
 .chosen-choices {
   font-size: 14px;
 }
@@ -23,4 +22,13 @@
   & li:nth-child(odd) {
     background-color: #eeeeee;
   }
+}
+
+.collection-link {
+  color: $primary-color !important;
+}
+
+#g_current_audio {
+  max-width: 250px;
+  text-overflow: ellipsis;
 }

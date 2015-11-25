@@ -12,10 +12,12 @@ class PlaylistsController < ApplicationController
   def show
     #@collection = Playlist.includes(:playlist_order).order('playlist_audios.playlist_order')
     @collection = @playlist
-    @audios = Playlist.find(params[:id]).audios.order('playlist_audios.playlist_order')
-    puts "@audios: #{@audios.inspect}"
+    puts "@collection: #{@collection.inspect}"
+    #@audios = Playlist.find(params[:id]).audios.order('playlist_audios.playlist_order')
+    #puts "@audios: #{@audios.inspect}"
     #@collection = Playlist.joins(:playlist_audio => :playlist_audio).order("playlist_audios.playlist_order")
     @last_audio = Audio.find(@playlist.current_audio) if @playlist.current_audio
+    puts "@last_audio: #{@last_audio}"
   end
 
   # GET /playlists/new

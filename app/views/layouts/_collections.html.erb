@@ -30,17 +30,9 @@
 <div class="row">
   <div class="columns large-6">
     <h4>Play <%= @collection.name %></h4>
-    <div class="controls">
-      <button class="warning large control change" data-function="-1" data-collection="<%= @collection.id %>"><i class="fi-previous"></i></button>
-      <button id="play" class="warning large control" data-function="play" data-collection="<%= @collection.id %>"><i class="fi-play"></i></button>
-      <button id="pause" class="warning large control" data-function="pause" data-collection="<%= @collection.id %>"><i class="fi-pause"></i></button>
-      <button class="warning large control change" data-function="1" data-collection="<%= @collection.id %>"><i class="fi-next"></i></button>
-      <br/>
-      <button id="looper" class="warning small control" data-function="looper" data-collection="<%= @collection.id %>"><i class="fi-loop"></i></button>
-      <button id="shuffle" class="warning small control" data-function="shuffle" data-collection="<%= @collection.id %>">
-        <i class="fi-shuffle"></i>
-      </button>
-    </div>
+
+    <%= react_component 'Player', id: @collection.id, action: controller_name %>
+
     <div class="current-song">
       <h5>Current Audio</h5>
       <span id="playing_audio">

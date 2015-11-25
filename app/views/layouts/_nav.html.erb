@@ -5,6 +5,22 @@
   <dd class="<%= 'active' if params[:controller] == 'albums' %>"><a href="/albums">Albums</a></dd>
   <dd class="<%= 'active' if params[:controller] == 'playlists' %>"><a href="/playlists">Playlists</a></dd>
   <dd class="<%= 'active' if params[:controller] == 'settings' %>"><a href="/settings">Settings</a></dd>
+
+  <dd id="g_current_audio" class="right">
+  </dd>
+  <dd id="controller" class="right">
+    <div class="controls">
+      <button id="g_prev" class="warning tiny global control change" data-function="-1" data-collection=""><i class="fi-previous"></i></button>
+      <button id="g_play" class="warning tiny global control" data-function="play" data-collection=""><i class="fi-play"></i></button>
+      <button id="g_next" class="warning tiny global control change" data-function="1" data-collection=""><i class="fi-next"></i></button>
+      &nbsp;&nbsp;
+      <button id="g_looper" class="warning tiny global control" data-function="looper" data-collection=""><i class="fi-loop"></i></button>
+      <button id="g_shuffle" class="warning tiny global control" data-function="shuffle" data-collection="">
+        <i class="fi-shuffle"></i>
+      </button>
+    </div>
+  </dd>
+
 </dl>
 
 <hr/>
