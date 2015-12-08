@@ -31,7 +31,11 @@
   <div class="columns large-6">
     <h4>Play <%= @collection.name %></h4>
 
-    <%= react_component 'Player', id: @collection.id, action: controller_name %>
+    <%= react_component 'Player', id: @collection.id,
+        action: controller_name,
+        audios: @collection.audios,
+        currentAudio: @last_audio,
+        playlistAudios: @playlist_audios %>
 
     <div class="current-song">
       <h5>Current Audio</h5>
@@ -58,7 +62,7 @@
 
                 <div class="row">
                   <div class="columns large-6">
-                    <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player" autobuffer="false">
+                    <audio id="<%= audio.id %>" controls data-audio="<%= audio.id %>" class="player" preload="false">
                       <% if audio.path.index('http') %>
                         <source src="<%= audio.path %>"></source>
                       <% else %>

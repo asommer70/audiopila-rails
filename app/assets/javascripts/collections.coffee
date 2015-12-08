@@ -10,91 +10,91 @@ ready_collections = ->
     allow_single_deselect: true
     no_results_text: 'No results matched'
 
+  # #
+  # # Handle "global" playback controls.
+  # #
+  # $g_play = $('#g_play')
+  # if !media_control.current_audio?
+  #   $('.global.control').attr('disabled', 'true')
   #
-  # Handle "global" playback controls.
+  # $(document).on 'media-play', (e) ->
+  #   # Enable buttons and add the collection id to the data element.
+  #   $('.global.control').attr('disabled', null)
+  #   $('.global.control').data('collection', media_control.current_audio.collection.id)
   #
-  $g_play = $('#g_play')
-  if !media_control.current_audio?
-    $('.global.control').attr('disabled', 'true')
-
-  $(document).on 'media-play', (e) ->
-    # Enable buttons and add the collection id to the data element.
-    $('.global.control').attr('disabled', null)
-    $('.global.control').data('collection', media_control.current_audio.collection.id)
-
-    # Adjust the play/pause button.
-    $g_play.html('<i class="fi-pause"></i>')
-    $g_play.data('function', 'pause')
-
-    # Display the currenlty playing audio.
-    media_control.set_g_current_audio()
-
-    # Handle the play/pause button clicks.
-    $g_play.on 'click', (e) ->
-      media_control.global_play_button($g_play)
-
-    # Handle the previous and next buttons.
-    $('.global.control.change').on 'click', (e) ->
-      media_control.set_g_current_audio()
-
-    # When the page changes put an invisible audio element in the nav so that it continues to play.
-    # $(document).on 'page:change', (e) ->
-    #   console.log('current_player:', media_control.current_audio.current_player)
-    #   $(media_control.current_audio.current_player).css('display', 'none')
-    #   $('#controller').append(media_control.current_audio.current_player)
-    #   media_control.current_audio.current_player.play()
-
-
-  $(document).on 'media-pause', (e) ->
-    $('.global.control').attr('disabled', null)
-    $('#g_play').html('<i class="fi-play"></i>')
-
-
+  #   # Adjust the play/pause button.
+  #   $g_play.html('<i class="fi-pause"></i>')
+  #   $g_play.data('function', 'pause')
   #
-  # Handle "show page" playback controls.
+  #   # Display the currenlty playing audio.
+  #   media_control.set_g_current_audio()
   #
-  $('.control').on 'click', (e) ->
-    $this = $(this)
-    if $this.hasClass('change')
-      media_control.change_audio($this.data().collection, parseInt($this.data().function), action)
-    else
-      media_control[$this.data().function](action, $this.data().collection)
-
-
+  #   # Handle the play/pause button clicks.
+  #   $g_play.on 'click', (e) ->
+  #     media_control.global_play_button($g_play)
   #
-  # Handle re-ordering of Audios.
+  #   # Handle the previous and next buttons.
+  #   $('.global.control.change').on 'click', (e) ->
+  #     media_control.set_g_current_audio()
   #
-  $('#audio-list').sortable({
-    handle: '.handle',
-    sortableClass: 'fade',
-  })
-
-  $('#audio-list').bind 'sortupdate', (e, ui) ->
-    # Find the audio at the oldIndex.
-    $oldIndexAudio = $($('li.audio')[ui.oldindex])
-
-    # Determine the correct order field.
-    if action == 'albums'
-      field = 'audio[album_order]='
-      old_url = "/audios/#{$oldIndexAudio.data().audio}.json"
-      new_url = "/audios/#{ui.item.data().audio}.json"
-    else
-      field = 'playlist[playlist_order]='
-      new_url = "/playlist_audios/#{ui.item.data().playlistAudio}"
-      old_url = "/playlist_audios/#{$oldIndexAudio.data().playlistAudio}"
-
-    # Send a PUT to each Audio to update the album_order field.
-    $.ajax({
-      url: old_url
-      method: 'put',
-      data: field + (ui.oldindex + 1)
-    })
-
-    $.ajax({
-      url: new_url
-      method: 'put',
-      data: field + (ui.index + 1)
-    })
+  #   # When the page changes put an invisible audio element in the nav so that it continues to play.
+  #   # $(document).on 'page:change', (e) ->
+  #   #   console.log('current_player:', media_control.current_audio.current_player)
+  #   #   $(media_control.current_audio.current_player).css('display', 'none')
+  #   #   $('#controller').append(media_control.current_audio.current_player)
+  #   #   media_control.current_audio.current_player.play()
+  #
+  #
+  # $(document).on 'media-pause', (e) ->
+  #   $('.global.control').attr('disabled', null)
+  #   $('#g_play').html('<i class="fi-play"></i>')
+  #
+  #
+  # #
+  # # Handle "show page" playback controls.
+  # #
+  # $('.control').on 'click', (e) ->
+  #   $this = $(this)
+  #   if $this.hasClass('change')
+  #     media_control.change_audio($this.data().collection, parseInt($this.data().function), action)
+  #   else
+  #     media_control[$this.data().function](action, $this.data().collection)
+  #
+  #
+  # #
+  # # Handle re-ordering of Audios.
+  # #
+  # $('#audio-list').sortable({
+  #   handle: '.handle',
+  #   sortableClass: 'fade',
+  # })
+  #
+  # $('#audio-list').bind 'sortupdate', (e, ui) ->
+  #   # Find the audio at the oldIndex.
+  #   $oldIndexAudio = $($('li.audio')[ui.oldindex])
+  #
+  #   # Determine the correct order field.
+  #   if action == 'albums'
+  #     field = 'audio[album_order]='
+  #     old_url = "/audios/#{$oldIndexAudio.data().audio}.json"
+  #     new_url = "/audios/#{ui.item.data().audio}.json"
+  #   else
+  #     field = 'playlist[playlist_order]='
+  #     new_url = "/playlist_audios/#{ui.item.data().playlistAudio}"
+  #     old_url = "/playlist_audios/#{$oldIndexAudio.data().playlistAudio}"
+  #
+  #   # Send a PUT to each Audio to update the album_order field.
+  #   $.ajax({
+  #     url: old_url
+  #     method: 'put',
+  #     data: field + (ui.oldindex + 1)
+  #   })
+  #
+  #   $.ajax({
+  #     url: new_url
+  #     method: 'put',
+  #     data: field + (ui.index + 1)
+  #   })
 
 
 @media_control = {

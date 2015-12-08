@@ -17,7 +17,7 @@ class PlaylistsController < ApplicationController
     #puts "@audios: #{@audios.inspect}"
     #@collection = Playlist.joins(:playlist_audio => :playlist_audio).order("playlist_audios.playlist_order")
     @last_audio = Audio.find(@playlist.current_audio) if @playlist.current_audio
-    puts "@last_audio: #{@last_audio}"
+    @playlist_audios = @playlist.playlist_audios
   end
 
   # GET /playlists/new
