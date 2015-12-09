@@ -7,7 +7,8 @@ var Player = React.createClass({
       status: 'fi-play',
       currentAudio: this.props.currentAudio,
       collection: this.props.audios,
-      playlistAudios: this.props.playlistAudios
+      looper: false,
+      shuffle: false
     }
   },
 
@@ -93,14 +94,40 @@ var Player = React.createClass({
     });
   },
 
+  looper: function() {
+    $('#looper').toggleClass('warning')
+    if (this.state.looper === true) {
+      this.setState({ looper: false });
+    } else {
+      this.setState({ looper: true },function() {
+        if (this.state.playing === false) {
+          this.play();
+        }
+      });
+    }
+  },
+
+  shuffle: function() {
+    $('#shuffle').toggleClass('warning')
+    if (this.state.shuffle === true) {
+      this.setState({ shuffle: false });
+    } else {
+      this.setState({ shuffle: true },function() {
+        if (this.state.playing === false) {
+          this.play();
+        }
+      });
+    }
+  },
+
   render: function() {
     return <div className="controls">
       <button className="warning large control" onClick={this.changeAudio.bind(this, -1)}><i className="fi-previous"></i></button>&nbsp;
       <button id="play" className={"large control " + this.state.buttonColor} onClick={this.play}><i className={this.state.status}></i></button>&nbsp;
       <button className="warning large control" onClick={this.changeAudio.bind(this, 1)}><i className="fi-next"></i></button>&nbsp;
       <br/>
-      <button id="looper" className="warning small control"><i className="fi-loop"></i></button>&nbsp;
-      <button id="shuffle" className="warning small control">
+      <button id="looper" className="warning small control" onClick={this.looper}><i className="fi-loop"></i></button>&nbsp;
+      <button id="shuffle" className="warning small control" onClick={this.shuffle}>
         <i className="fi-shuffle"></i>
       </button>
     </div>

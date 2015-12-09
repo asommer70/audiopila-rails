@@ -23,13 +23,7 @@
 <div class="row">
   <div class="columns large-6 text-center panel">
     <%= image_tag @audio.album.image.thumb('300x300').url if @audio.album && @audio.album.image %>
-    <audio id="<%= @audio.id %>" controls data-audio="<%= @audio.id %>" class="player">
-      <% if @audio.path.index('http') %>
-        <source src="<%= @audio.path %>"></source>
-      <% else %>
-        <source src="<%= stream_path(@audio.id) %>"></source>
-      <% end %>
-    </audio>
+    <%= react_component 'Audio', id: @audio.id, action: controller_name, audio: @audio %>
   </div>
 </div>
 
