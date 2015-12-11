@@ -67,8 +67,8 @@ ready_audio = ->
     #   else
     #     player.currentTime -= 1
 
-    .on 'ended', (e) ->
-      $player = $(this)
+    # .on 'ended', (e) ->
+    #   $player = $(this)
 
       # $.ajax({
       #   url: '/audios/' + $player.data().audio  + '.json',
@@ -76,31 +76,31 @@ ready_audio = ->
       #   data: 'audio[playback_time]=' + 0
       # })
 
-      if media_control.current_audio?
-        if media_control.current_audio.audio.id == $player.data().audio
-          # If shuffling is on play a random audio.
-          if media_control.shuffling
-            random = Math.round(Math.random() * media_control.current_audio.album.audios.length)
-
-            # Don't let the current audio play back to back.
-            if random == media_control.current_player.audio.album_order
-              random = Math.round(Math.random() * media_control.current_audio.album.audios.length)
-
-            media_control.current_audio = {
-              album: media_control.current_audio.album,
-              audio: media_control.current_audio.album.audios[random],
-              current_player: $('#' + media_control.current_audio.album.audios[random].id)[0],
-            }
-            media_control.play(media_control.current_audio.album.id)
-          else
-            # If the audio is the last one and looping is on then start the first one.
-            if media_control.current_audio.audio.album_order == media_control.current_audio.album.audios.length
-              if media_control.looping
-                media_control.change_audio(media_control.current_audio.album.id, 1)
-              else
-                return
-            else
-              media_control.change_audio(media_control.current_audio.album.id, 1)
+      # if media_control.current_audio?
+      #   if media_control.current_audio.audio.id == $player.data().audio
+      #     # If shuffling is on play a random audio.
+      #     if media_control.shuffling
+      #       random = Math.round(Math.random() * media_control.current_audio.album.audios.length)
+      #
+      #       # Don't let the current audio play back to back.
+      #       if random == media_control.current_player.audio.album_order
+      #         random = Math.round(Math.random() * media_control.current_audio.album.audios.length)
+      #
+      #       media_control.current_audio = {
+      #         album: media_control.current_audio.album,
+      #         audio: media_control.current_audio.album.audios[random],
+      #         current_player: $('#' + media_control.current_audio.album.audios[random].id)[0],
+      #       }
+      #       media_control.play(media_control.current_audio.album.id)
+      #     else
+      #       # If the audio is the last one and looping is on then start the first one.
+      #       if media_control.current_audio.audio.album_order == media_control.current_audio.album.audios.length
+      #         if media_control.looping
+      #           media_control.change_audio(media_control.current_audio.album.id, 1)
+      #         else
+      #           return
+      #       else
+      #         media_control.change_audio(media_control.current_audio.album.id, 1)
 
 
 

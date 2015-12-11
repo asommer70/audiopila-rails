@@ -102,11 +102,16 @@ var Audio = React.createClass({
 
   ended: function() {
     // Set playback_time to 0.
+    this.state.player.currentTime = 0;
+    this.state.player.load();
+
     $.ajax({
       url: '/audios/' + this.props.id  + '.json',
       method: 'put',
       data: 'audio[playback_time]=' + 0
     });
+
+    $(document).trigger('playback-ended');
   },
 
   render: function() {

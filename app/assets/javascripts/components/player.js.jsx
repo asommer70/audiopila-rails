@@ -12,6 +12,37 @@ var Player = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    /**
+     * Handle shuffle and looping when audio ends.
+    */
+    $(document).on('playback-ended', () => {
+      if (this.state.shuffle) {
+          var random = this.getRandomPos();
+          var currentPlayer = $('#' + this.state.collection[random].id)[0];
+
+          this.setState({currentAudio: this.state.collection[random], currentPlayer: currentPlayer, playing: true}, () => {
+            //this.play();
+            this.state.currentPlayer.play();
+            this.updateCollection();
+          });
+      } else {
+        // If the audio is the last one and looping is on then start the first one.
+        if (this.state.currentAudio.album_order == this.state.collection.length) {
+          if (this.state.looper) {
+            this.changeAudio(1);
+          } else {
+            // If it is the last audio and album/playlist is not set to loop just return and stop playback.
+            return;
+          }
+        } else {
+          // If not last audio advance to next.
+          this.changeAudio(1);
+        }
+      }
+    });
+  },
+
   findCurrentAudio: function() {
     var current = undefined;
 
@@ -21,6 +52,17 @@ var Player = React.createClass({
       }
     }
     return current;
+  },
+
+  getRandomPos: function() {
+    var random = Math.floor(Math.random() * this.state.collection.length);
+
+    // Don't let the current audio play back to back.
+    var current = this.findCurrentAudio();
+    while (random == current) {
+      random = Math.floor(Math.random() * this.state.collection.length)
+    }
+    return random;
   },
 
   updateCollection: function() {
@@ -47,8 +89,14 @@ var Player = React.createClass({
       this.setState({buttonColor: '', status: 'fi-play'});
 
       if (this.state.currentPlayer === undefined) {
-        this.setState({ currentPlayer: $('#' + this.state.currentAudio.id)[0] });
-        $('#' + this.state.currentAudio.id)[0].play()
+        if (this.state.currentAudio === null) {
+          this.setState({currentAudio: this.state.collection[0], currentPlayer: $('#' + this.state.collection[0].id)[0]}, () => {
+            $('#' + this.state.currentAudio.id)[0].play()
+          });
+        } else {
+          this.setState({ currentPlayer: $('#' + this.state.currentAudio.id)[0] });
+          $('#' + this.state.currentAudio.id)[0].play()
+        }
       } else {
         this.state.currentPlayer.play();
       }
@@ -73,24 +121,30 @@ var Player = React.createClass({
   },
 
   changeAudio: function (direction) {
-    if (this.state.playing) {
-      this.pause();
-    }
+    this.state.currentPlayer.pause();
 
-    // Get next Audio and play it.
-    var currentPos = this.findCurrentAudio() + direction;
+    if (this.state.shuffle) {
+      var random = this.getRandomPos();
 
-    // Handle going backwards from the last Audio.
-    var currentAudio = this.state.collection[currentPos];
-    if (currentPos >= this.state.collection.length) {
-      currentAudio = this.state.collection[0];
-    } else if (currentPos == -1) {
-      currentAudio = this.state.collection[this.state.collection.length - 1]
+      var currentAudio = this.state.collection[random]
+      var currentPlayer = $('#' + this.state.collection[random].id)[0];
+    } else {
+      // Get next Audio and play it.
+      var currentPos = this.findCurrentAudio() + direction;
+
+      // Handle going backwards from the last Audio.
+      var currentAudio = this.state.collection[currentPos];
+      if (currentPos >= this.state.collection.length) {
+        currentAudio = this.state.collection[0];
+      } else if (currentPos == -1) {
+        currentAudio = this.state.collection[this.state.collection.length - 1]
+      }
+      var currentPlayer = $('#' + currentAudio.id)[0];
     }
-    var currentPlayer = $('#' + currentAudio.id)[0];
 
     this.setState({currentAudio: currentAudio, currentPlayer: currentPlayer}, function() {
-      this.play();
+      this.state.currentPlayer.play();
+      this.updateCollection();
     });
   },
 
