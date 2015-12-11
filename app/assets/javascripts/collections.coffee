@@ -60,41 +60,41 @@ ready_collections = ->
   #   else
   #     media_control[$this.data().function](action, $this.data().collection)
   #
+
   #
-  # #
-  # # Handle re-ordering of Audios.
-  # #
-  # $('#audio-list').sortable({
-  #   handle: '.handle',
-  #   sortableClass: 'fade',
-  # })
+  # Handle re-ordering of Audios.
   #
-  # $('#audio-list').bind 'sortupdate', (e, ui) ->
-  #   # Find the audio at the oldIndex.
-  #   $oldIndexAudio = $($('li.audio')[ui.oldindex])
-  #
-  #   # Determine the correct order field.
-  #   if action == 'albums'
-  #     field = 'audio[album_order]='
-  #     old_url = "/audios/#{$oldIndexAudio.data().audio}.json"
-  #     new_url = "/audios/#{ui.item.data().audio}.json"
-  #   else
-  #     field = 'playlist[playlist_order]='
-  #     new_url = "/playlist_audios/#{ui.item.data().playlistAudio}"
-  #     old_url = "/playlist_audios/#{$oldIndexAudio.data().playlistAudio}"
-  #
-  #   # Send a PUT to each Audio to update the album_order field.
-  #   $.ajax({
-  #     url: old_url
-  #     method: 'put',
-  #     data: field + (ui.oldindex + 1)
-  #   })
-  #
-  #   $.ajax({
-  #     url: new_url
-  #     method: 'put',
-  #     data: field + (ui.index + 1)
-  #   })
+  $('#audio-list').sortable({
+    handle: '.handle',
+    sortableClass: 'fade',
+  })
+
+  $('#audio-list').bind 'sortupdate', (e, ui) ->
+    # Find the audio at the oldIndex.
+    $oldIndexAudio = $($('li.audio')[ui.oldindex])
+
+    # Determine the correct order field.
+    if action == 'albums'
+      field = 'audio[album_order]='
+      old_url = "/audios/#{$oldIndexAudio.data().audio}.json"
+      new_url = "/audios/#{ui.item.data().audio}.json"
+    else
+      field = 'playlist[playlist_order]='
+      new_url = "/playlist_audios/#{ui.item.data().playlistAudio}"
+      old_url = "/playlist_audios/#{$oldIndexAudio.data().playlistAudio}"
+
+    # Send a PUT to each Audio to update the album_order field.
+    $.ajax({
+      url: old_url
+      method: 'put',
+      data: field + (ui.oldindex + 1)
+    })
+
+    $.ajax({
+      url: new_url
+      method: 'put',
+      data: field + (ui.index + 1)
+    })
 
 
 @media_control = {
