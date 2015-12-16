@@ -5,6 +5,7 @@ class PlaylistsController < ApplicationController
   # GET /playlists.json
   def index
     @playlists = Playlist.all
+    render :index, keep: 'nav'
   end
 
   # GET /playlists/1

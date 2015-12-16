@@ -1,23 +1,26 @@
 <br/><br/>
 
-<dl class="sub-nav">
+<dl class="sub-nav" id="nav" data-turbolinks-permanent>
   <dd class="<%= 'active' if params[:controller] == 'audios' %>"><a href="/">Audio Files</a></dd>
   <dd class="<%= 'active' if params[:controller] == 'albums' %>"><a href="/albums">Albums</a></dd>
   <dd class="<%= 'active' if params[:controller] == 'playlists' %>"><a href="/playlists">Playlists</a></dd>
   <dd class="<%= 'active' if params[:controller] == 'settings' %>"><a href="/settings">Settings</a></dd>
 
-  <dd id="g_current_audio" class="right">
+  <dd id="current-song" class="right">
   </dd>
   <dd id="controller" class="right">
-    <div class="controls">
-      <button id="g_prev" class="warning tiny global control change" data-function="-1" data-collection=""><i class="fi-previous"></i></button>
-      <button id="g_play" class="warning tiny global control" data-function="play" data-collection=""><i class="fi-play"></i></button>
-      <button id="g_next" class="warning tiny global control change" data-function="1" data-collection=""><i class="fi-next"></i></button>
-      &nbsp;&nbsp;
-      <button id="g_looper" class="warning tiny global control" data-function="looper" data-collection=""><i class="fi-loop"></i></button>
-      <button id="g_shuffle" class="warning tiny global control" data-function="shuffle" data-collection="">
-        <i class="fi-shuffle"></i>
-      </button>
+    <!-- make all of this a React component -->
+    <div id="global_player" data-turbolinks-permanent>
+
+    <% if @collection %>
+      <%= react_component 'Player', id: @collection.id,
+          action: controller_name,
+          collection: @collection.audios,
+          currentAudio: @last_audio,
+          size: 'small' %>
+    <% else %>
+      <%= react_component 'GlobalPlayer' %>
+    <% end %>
     </div>
   </dd>
 

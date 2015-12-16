@@ -33,12 +33,13 @@
 
     <%= react_component 'Player', id: @collection.id,
         action: controller_name,
-        audios: @collection.audios,
-        currentAudio: @last_audio %>
+        collection: @collection.audios,
+        currentAudio: @last_audio,
+        size: 'large' %>
 
     <div class="current-song">
       <h5>Current Audio</h5>
-      <span id="playing_audio">
+      <span class="playing_audio">
         <% if @last_audio %>
           <strong><%= @last_audio.name %></strong> was last played.
         <% else %>

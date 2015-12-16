@@ -21,4 +21,7 @@
 //= require chosen.jquery
 //= require html.sortable
 
-$(function(){ $(document).foundation(); });
+$(function(){
+  Turbolinks.enableTransitionCache();
+  $(document).foundation();
+});

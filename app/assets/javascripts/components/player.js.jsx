@@ -1,14 +1,34 @@
 var Player = React.createClass({
 
   getInitialState: function() {
+
+    // Save the collection and currentAudio to localStorage to support navigation to new pages.
+    console.log('Saving collection and currentAudio to localStorage...');
+    if (this.props.collection === undefined) {
+      var collection = JSON.parse(localStorage.getItem('collection'));
+      var currentAudio = JSON.parse(localStorage.getItem('currentAudio'));
+    } else {
+      var collection = this.props.collection;
+      var currentAudio = this.props.currentAudio;
+    }
+
     return {
       buttonColor: 'warning',
       playing: false,
       status: 'fi-play',
-      currentAudio: this.props.currentAudio,
-      collection: this.props.audios,
+      currentAudio: currentAudio,
+      collection: collection,
       looper: false,
       shuffle: false
+    }
+  },
+
+  componentWillMount: function() {
+    if (this.props.collection !== undefined) {
+      localStorage.setItem('collection', JSON.stringify(this.props.collection));
+      localStorage.setItem('currentAudio', JSON.stringify(this.props.currentAudio));
+      localStorage.setItem('action', this.props.action);
+      localStorage.setItem('id', this.props.id);
     }
   },
 
@@ -67,12 +87,15 @@ var Player = React.createClass({
 
   updateCollection: function() {
     if (this.props.action == 'albums') {
-      $('#playing_audio').html(this.state.currentAudio.name)
+      $('.playing_audio').html(this.state.currentAudio.name)
       field = 'album[current_audio]='
     } else {
-      $('#playing_audio').html(this.state.currentAudio.name)
+      $('.playing_audio').html(this.state.currentAudio.name)
       field = 'playlist[current_audio]='
     }
+
+    console.log('this.props.action:', this.props.action);
+    console.log('this.props.id:', this.props.id);
 
     $.ajax({
       url: '/' + this.props.action + '/' + this.props.id + '.json',
@@ -176,12 +199,12 @@ var Player = React.createClass({
 
   render: function() {
     return <div className="controls">
-      <button className="warning large control" onClick={this.changeAudio.bind(this, -1)}><i className="fi-previous"></i></button>&nbsp;
-      <button id="play" className={"large control " + this.state.buttonColor} onClick={this.play}><i className={this.state.status}></i></button>&nbsp;
-      <button className="warning large control" onClick={this.changeAudio.bind(this, 1)}><i className="fi-next"></i></button>&nbsp;
+      <button className={"warning control " + this.props.size} onClick={this.changeAudio.bind(this, -1)}><i className="fi-previous"></i></button>&nbsp;
+      <button id="play" className={this.props.size + " large control " + this.state.buttonColor} onClick={this.play}><i className={this.state.status}></i></button>&nbsp;
+      <button className={"warning control " + this.props.size} onClick={this.changeAudio.bind(this, 1)}><i className="fi-next"></i></button>&nbsp;
       <br/>
-      <button id="looper" className="warning small control" onClick={this.looper}><i className="fi-loop"></i></button>&nbsp;
-      <button id="shuffle" className="warning small control" onClick={this.shuffle}>
+      <button id="looper" className={"warning control " + this.props.size} onClick={this.looper}><i className="fi-loop"></i></button>&nbsp;
+      <button id="shuffle" className={"warning control " + this.props.size} onClick={this.shuffle}>
         <i className="fi-shuffle"></i>
       </button>
     </div>
