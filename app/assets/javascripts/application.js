@@ -20,8 +20,32 @@
 //= require_tree .
 //= require chosen.jquery
 //= require html.sortable
+//= require jquery.pjax
 
 $(function(){
-  Turbolinks.enableTransitionCache();
   $(document).foundation();
+
+  // Setup pjax to load everything but the global player.
+  $(document).pjax('a', '#pjax');
+
+  $(document).on('pjax:complete', function(event, xhr, status, options) {
+    // Remove current active nav class.
+    $('.active').toggleClass('active');
+
+    // Add active to current nav.
+    switch (window.location.pathname) {
+      case '/albums':
+        $('.albums').toggleClass('active')
+        break;
+      case '/audios':
+        $('.audios').toggleClass('active')
+        break;
+      case '/playlists':
+        $('.playlists').toggleClass('active')
+        break;
+      case '/settings':
+        $('.settings').toggleClass('active')
+        break;
+    }
+  })
 });

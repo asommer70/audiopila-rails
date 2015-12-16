@@ -6,7 +6,6 @@ class AlbumsController < ApplicationController
   # GET /albums.json
   def index
     @albums = Album.all
-    render :index, keep: 'nav'
   end
 
   # GET /albums/1

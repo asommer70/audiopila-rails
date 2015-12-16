@@ -113,6 +113,9 @@ GEM
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
+    rack-pjax (0.8.0)
+      nokogiri (~> 1.5)
+      rack (~> 1.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.4)
@@ -232,6 +235,7 @@ DEPENDENCIES
   phantomjs
   poltergeist
   quiet_assets (~> 1.1.0)
+  rack-pjax
   rails (= 4.2.4)
   rails-settings-cached (~> 0.4.0)
   react-rails (~> 1.4.0)

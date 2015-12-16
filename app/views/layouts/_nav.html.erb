@@ -1,16 +1,16 @@
 <br/><br/>
 
-<dl class="sub-nav" id="nav" data-turbolinks-permanent>
-  <dd class="<%= 'active' if params[:controller] == 'audios' %>"><a href="/">Audio Files</a></dd>
-  <dd class="<%= 'active' if params[:controller] == 'albums' %>"><a href="/albums">Albums</a></dd>
-  <dd class="<%= 'active' if params[:controller] == 'playlists' %>"><a href="/playlists">Playlists</a></dd>
-  <dd class="<%= 'active' if params[:controller] == 'settings' %>"><a href="/settings">Settings</a></dd>
+<dl class="sub-nav" id="nav">
+  <dd class="audios <%= 'active' if params[:controller] == 'audios' %>"><a href="/">Audio Files</a></dd>
+  <dd class="albums <%= 'active' if params[:controller] == 'albums' %>"><a href="/albums">Albums</a></dd>
+  <dd class="playlists <%= 'active' if params[:controller] == 'playlists' %>"><a href="/playlists">Playlists</a></dd>
+  <dd class="settings <%= 'active' if params[:controller] == 'settings' %>"><a href="/settings">Settings</a></dd>
 
   <dd id="current-song" class="right">
   </dd>
   <dd id="controller" class="right">
     <!-- make all of this a React component -->
-    <div id="global_player" data-turbolinks-permanent>
+    <div id="global_player">
 
     <% if @collection %>
       <%= react_component 'Player', id: @collection.id,

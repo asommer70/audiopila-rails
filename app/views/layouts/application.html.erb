@@ -25,7 +25,9 @@
       <div class="small-12">
         <%= render 'layouts/nav' %>
 
-        <%= yield %>
+        <div id="pjax" data-pjax-container>
+          <%= yield %>
+        </div>
       </div>
     </div>
   </body>

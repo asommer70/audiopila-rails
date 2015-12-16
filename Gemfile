@@ -24,6 +24,8 @@ gem 'foundation-icons-sass-rails'
 gem 'rails-settings-cached', '~> 0.4.0'
 gem 'dragonfly', '~> 1.0.12'
 gem 'react-rails', '~> 1.4.0'
+#gem 'pjax_rails'
+gem 'rack-pjax'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -245,3 +245,6 @@ ready_collections = ->
 
 $(document).ready(ready_collections)
 $(document).on('page:load', ready_collections)
+# 
+# jQuery ->
+#   $('.audio a').pjax('a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])', '[data-pjax-container]')
